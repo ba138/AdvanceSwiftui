@@ -16,7 +16,7 @@ struct LongPressBootCamp: View {
             .padding(.horizontal,20)
             .background(isCompleted ? Color.green : Color.gray)
             .cornerRadius(12)
-            .onLongPressGesture {
+            .onLongPressGesture(minimumDuration : 1.0) {
                 isCompleted.toggle()
             }
     }
