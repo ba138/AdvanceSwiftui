@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LongPressBootCamp: View {
     @State var isCompleted : Bool = false
+    @State var isSucees : Bool = false
     var body: some View {
 //        Text(isCompleted ? "Completed" : "Not Completed")
 //            .foregroundColor(.white)
@@ -21,8 +22,10 @@ struct LongPressBootCamp: View {
 //            }
         VStack{
             Rectangle()
+                .fill(isSucees ? Color.green : Color.blue)
+                .frame(maxWidth:isCompleted ? .infinity : 0)
+
                 .frame(height: 55)
-                .frame(width: 20)
                 .frame(maxWidth: .infinity ,alignment: .leading)
                 .background(.gray)
                 .padding()
@@ -32,11 +35,34 @@ struct LongPressBootCamp: View {
                     .padding()
                     .background(.black)
                     .cornerRadius(12)
+                    .onLongPressGesture(minimumDuration: 1, maximumDistance: 50, pressing: { isPressing in
+                        if isPressing {
+                            withAnimation(.easeIn(duration: 1)) {
+                                isCompleted = true
+                            }
+                            }else {
+                                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                                    withAnimation(.easeInOut){
+                                        isCompleted = false
+
+                                    }                                })
+                        }
+                    }, perform: {
+                        // Long press completed action (optional)
+                        withAnimation(.easeInOut){
+                            isSucees = true
+                        }
+                    })
                 Text("Reset")
                     .foregroundColor(.white)
                     .padding()
                     .background(.black)
                     .cornerRadius(12)
+                    .onTapGesture {
+                        withAnimation(.easeIn) {
+                            isCompleted = false
+                        }
+                    }
                 
             }
             
