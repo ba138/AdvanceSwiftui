@@ -40,17 +40,17 @@ struct LongPressBootCamp: View {
                             withAnimation(.easeIn(duration: 1)) {
                                 isCompleted = true
                             }
-                            }else {
-                                DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
-                                    withAnimation(.easeInOut){
-                                        isCompleted = false
-
-                                    }                                })
+                        } else {
+                            if !isSucees {
+                                withAnimation(.easeOut(duration: 0.2)) {
+                                    isCompleted = false
+                                }
+                            }
                         }
                     }, perform: {
-                        // Long press completed action (optional)
-                        withAnimation(.easeInOut){
+                        withAnimation(.easeInOut) {
                             isSucees = true
+                            isCompleted = true
                         }
                     })
                 Text("Reset")
@@ -61,6 +61,7 @@ struct LongPressBootCamp: View {
                     .onTapGesture {
                         withAnimation(.easeIn) {
                             isCompleted = false
+                            isSucees = false
                         }
                     }
                 
