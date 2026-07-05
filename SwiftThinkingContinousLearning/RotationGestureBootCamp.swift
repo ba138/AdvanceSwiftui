@@ -18,9 +18,14 @@ struct RotationGestureBootCamp: View {
             .rotationEffect(angle)
             .cornerRadius(12)
             .gesture(
-                RotateGesture()
+                RotationGesture()
                     .onChanged{ value in
-                        
+                      angle = value
+                    }
+                    .onEnded{ value in
+                        withAnimation(.spring()){
+                            angle = Angle(degrees: 0)
+                        }
                     }
             )
     }
