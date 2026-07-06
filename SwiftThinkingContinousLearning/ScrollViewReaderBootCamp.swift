@@ -25,28 +25,30 @@ struct ScrollViewReaderBootCamp: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal,10)
                     .padding(.top, 8)
-
-                    ForEach(0..<50) { index in
-                        VStack(alignment: .trailing, spacing: 4){
-                            Text("This is item # \(index)")
-                                .foregroundColor(.white)
-                                .padding()
-                                .background(.green)
-                                .cornerRadius(10)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.horizontal,10)
-                            Text("19:20")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
-                                .frame(maxWidth: .infinity, alignment: .trailing)
-                                .padding(.horizontal,10)
+                    ScrollViewReader{ proxy in
+                        ForEach(0..<50) { index in
+                            VStack(alignment: .trailing, spacing: 4){
+                                Text("This is item # \(index)")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(.green)
+                                    .cornerRadius(10)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                    .padding(.horizontal,10)
+                                Text("19:20")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                    .padding(.horizontal,10)
+                            }
                         }
+                        // Extra spacer so last message isn't hidden by input bar
+                        Color.clear.frame(height: 8)
                     }
-                    // Extra spacer so last message isn't hidden by input bar
-                    Color.clear.frame(height: 8)
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(maxWidth: .infinity)
-            }
+                    }
+                    
 
             // Fixed input bar like WhatsApp
             HStack(spacing: 8) {
