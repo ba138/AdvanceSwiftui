@@ -26,6 +26,12 @@ struct ScrollViewReaderBootCamp: View {
                     .padding(.horizontal,10)
                     .padding(.top, 8)
                     ScrollViewReader{ proxy in
+                        Button("Scroll to bottom") {
+                           
+                            withAnimation(.spring()) {
+                                proxy.scrollTo(49,anchor: .bottom)
+                            }
+                                                }
                         ForEach(0..<50) { index in
                             VStack(alignment: .trailing, spacing: 4){
                                 Text("This is item # \(index)")
@@ -35,6 +41,7 @@ struct ScrollViewReaderBootCamp: View {
                                     .cornerRadius(10)
                                     .frame(maxWidth: .infinity, alignment: .trailing)
                                     .padding(.horizontal,10)
+                                    .id(index)
                                 Text("19:20")
                                     .font(.caption)
                                     .foregroundStyle(.secondary)
