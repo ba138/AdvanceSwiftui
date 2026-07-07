@@ -9,13 +9,18 @@ import SwiftUI
 
 struct GeometryReaderBootCamp: View {
     var body: some View {
-        HStack(spacing : 0) {
-            Rectangle()
-                .fill(.red)
-            Rectangle()
-                .fill(.blue)
+        GeometryReader{ geometry in
+            HStack(spacing : 0) {
+                
+                Rectangle()
+                    .fill(.red)
+                    .frame(width: geometry.size .width * 0.666 )
+                Rectangle()
+                    .fill(.blue)
+            }
+            .ignoresSafeArea()
+
         }
-        .ignoresSafeArea()
     }
 }
 
