@@ -17,26 +17,31 @@ struct RendomModel : Identifiable {
 struct MultiSheetBottomCamp: View {
     @State var selectedModel : RendomModel = RendomModel(title: "Starting model")
     @State var showSheet : Bool = false
+    @State var showSheet2 : Bool = false
     var body: some View {
         VStack (spacing : 20){
             Button("Button1") {
-                selectedModel = RendomModel(title: "One")
                 showSheet.toggle()
+            }
+            .sheet(isPresented: $showSheet) {
+                NextScreen(randomModel: RendomModel(title: "One"))
             }
             Button("Button2") {
-                selectedModel = RendomModel(title: "Two")
-                showSheet.toggle()
+                showSheet2.toggle()
 
 
             }
+            .sheet(isPresented: $showSheet2) {
+                NextScreen(randomModel: RendomModel(title: "Two"))
+            }
         }
-        .sheet(isPresented: $showSheet) {
-            NextScreen(randomModel: $selectedModel)
-        }
+//        .sheet(isPresented: $showSheet) {
+//            NextScreen(randomModel: selectedModel)
+//        }
     }
 }
 struct NextScreen : View {
-    @Binding var randomModel : RendomModel
+   let randomModel : RendomModel
     var body: some View {
         Text(randomModel.title)
             .font(.headline)
