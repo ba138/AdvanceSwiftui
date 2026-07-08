@@ -24,7 +24,7 @@ struct GeometryReaderBootCamp: View {
                             
                     }
                     .frame(width: 300 ,height: 250)
-                        .padding()
+                    .padding()
                     
                 }
             }
