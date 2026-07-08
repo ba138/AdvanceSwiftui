@@ -12,6 +12,7 @@ struct RendomModel : Identifiable {
 }
 struct MultiSheetBottomCamp: View {
     @State var selectedModel : RendomModel = RendomModel(title: "Starting model")
+    @State var showSheet : Bool = false
     var body: some View {
         VStack (spacing : 20){
             Button("Button1") {
@@ -22,6 +23,16 @@ struct MultiSheetBottomCamp: View {
 
             }
         }
+        .sheet(isPresented: $showSheet) {
+            NextScreen(randomModel: selectedModel)
+        }
+    }
+}
+struct NextScreen : View {
+    let randomModel : RendomModel
+    var body: some View {
+        Text(randomModel.title)
+            .font(.headline)
     }
 }
 
