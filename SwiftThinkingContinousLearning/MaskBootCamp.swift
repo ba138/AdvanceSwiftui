@@ -11,15 +11,18 @@ struct MaskBootCamp: View {
     @State var rating : Int = 3
     var body: some View {
         ZStack {
-            HStack{
-                ForEach(1..<6) { index in
-                Image(systemName: "star.fill")
-                        .font(.largeTitle)
-                        .foregroundColor(rating>=index ?  .yellow : .gray)
-                        .onTapGesture {
-                            rating = index
-                        }
-                }
+            ratingView
+        }
+    }
+    private var ratingView : some View{
+        HStack{
+            ForEach(1..<6) { index in
+            Image(systemName: "star.fill")
+                    .font(.largeTitle)
+                    .foregroundColor(rating>=index ?  .yellow : .gray)
+                    .onTapGesture {
+                        rating = index
+                    }
             }
         }
     }
