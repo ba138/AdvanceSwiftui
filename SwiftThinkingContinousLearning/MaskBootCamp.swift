@@ -12,6 +12,20 @@ struct MaskBootCamp: View {
     var body: some View {
         ZStack {
             ratingView
+                .overlay {
+                   overLayView
+                }
+        }
+    }
+    private var overLayView : some View{
+        GeometryReader{ geometry in
+            ZStack (alignment : .leading){
+                Rectangle()
+                    .foregroundColor(.yellow)
+//                                .mask(ratingView)
+                    .frame(width: CGFloat(rating)/5 * geometry.size.width)
+
+            }
         }
     }
     private var ratingView : some View{
@@ -19,7 +33,7 @@ struct MaskBootCamp: View {
             ForEach(1..<6) { index in
             Image(systemName: "star.fill")
                     .font(.largeTitle)
-                    .foregroundColor(rating>=index ?  .yellow : .gray)
+                    .foregroundColor(.gray)
                     .onTapGesture {
                         rating = index
                     }
