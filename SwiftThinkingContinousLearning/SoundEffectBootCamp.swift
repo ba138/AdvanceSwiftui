@@ -6,8 +6,14 @@
 //
 
 import SwiftUI
-
+import AVKit
+class SoundManger{
+    static let istance = SoundManger()
+    var player : AVAudioPlayer?
+    
+}
 struct SoundEffectBootCamp: View {
+    @State var soundManger : SoundManger = SoundManger()
     var body: some View {
         VStack (spacing : 20){
             Button("Play Sound 1") {
