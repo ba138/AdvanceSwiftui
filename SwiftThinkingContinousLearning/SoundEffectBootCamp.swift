@@ -10,6 +10,15 @@ import AVKit
 class SoundManger{
     static let istance = SoundManger()
     var player : AVAudioPlayer?
+    func playSound(){
+        guard let url = URL(string: "") else {return}
+        do{
+            player = try  AVAudioPlayer(contentsOf: url)
+
+        }catch let error {
+            print("this is the error \(error)")
+        }
+    }
     
 }
 struct SoundEffectBootCamp: View {
