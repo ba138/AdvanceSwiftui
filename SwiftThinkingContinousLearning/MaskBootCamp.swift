@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct MaskBootCamp: View {
-    @State var rating : Int = 3
+    @State var rating : Int = 0
     var body: some View {
         ZStack {
             ratingView
                 .overlay {
                    overLayView
+                        .mask(ratingView)
                 }
         }
     }
@@ -27,6 +28,7 @@ struct MaskBootCamp: View {
 
             }
         }
+        .allowsHitTesting(false)
     }
     private var ratingView : some View{
         HStack{
@@ -35,8 +37,10 @@ struct MaskBootCamp: View {
                     .font(.largeTitle)
                     .foregroundColor(.gray)
                     .onTapGesture {
-                        rating = index
-                    }
+                        withAnimation (.easeInOut){
+                            rating = index
+
+                        }                    }
             }
         }
     }
