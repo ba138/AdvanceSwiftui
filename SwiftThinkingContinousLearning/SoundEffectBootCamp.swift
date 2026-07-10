@@ -6,15 +6,15 @@
 //
 
 import SwiftUI
-import AVKit
+import AVFoundation
 class SoundManger{
     static let istance = SoundManger()
     var player : AVAudioPlayer?
-    func playSound(){
-        guard let url = URL(string: "") else {return}
+    func playSound(sound : String){
+        guard let url = Bundle.main.url(forResource: sound, withExtension: "mp3") else { return }
         do{
             player = try  AVAudioPlayer(contentsOf: url)
-
+            player?.play()
         }catch let error {
             print("this is the error \(error)")
         }
@@ -22,14 +22,14 @@ class SoundManger{
     
 }
 struct SoundEffectBootCamp: View {
-    @State var soundManger : SoundManger = SoundManger()
+    @State private var soundManger: SoundManger = SoundManger()
     var body: some View {
         VStack (spacing : 20){
             Button("Play Sound 1") {
-                
+                soundManger.playSound(sound: "tada")
             }
             Button("Play Sound 2") {
-                
+                soundManger.playSound(sound: "small")
             }
         }
     }
