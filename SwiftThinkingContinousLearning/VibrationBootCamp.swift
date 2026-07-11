@@ -7,7 +7,16 @@
 
 import SwiftUI
 class Heptics{
-    static let instance = Heptics() // singleton 
+    static let instance = Heptics() // singleton
+    func notification(type : UINotificationFeedbackGenerator.FeedbackType)
+    {
+      let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(type)
+    }
+    func impact()
+    {
+        
+    }
 }
 struct VibrationBootCamp: View {
     var body: some View {
