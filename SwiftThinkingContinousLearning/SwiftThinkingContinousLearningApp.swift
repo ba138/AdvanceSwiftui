@@ -11,7 +11,7 @@ import SwiftUI
 struct SwiftThinkingContinousLearningApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LocalNotificationBootCamp()
         }
     }
 }
