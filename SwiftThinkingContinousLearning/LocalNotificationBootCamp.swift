@@ -30,10 +30,13 @@ class NotificationManger{
         //we have three triggerd
         
         //Time
-        let time = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
+//        let time = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
         //Calander
+        var dateComponent = DateComponents()
+        dateComponent.hour = 12;        dateComponent.minute = 54
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: true)
         //Locstion
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: time)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
     }
 }
