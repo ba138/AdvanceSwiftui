@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UserNotifications
+import CoreLocation
 class NotificationManger{
     static let instance = NotificationManger()
     func requestauth(){
@@ -32,10 +33,22 @@ class NotificationManger{
         //Time
 //        let time = UNTimeIntervalNotificationTrigger(timeInterval: 5.0, repeats: false)
         //Calander
-        var dateComponent = DateComponents()
-        dateComponent.hour = 12;        dateComponent.minute = 54
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: true)
-        //Locstion
+//        var dateComponent = DateComponents()
+//        dateComponent.hour = 12;        dateComponent.minute = 54
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponent, repeats: true)
+        //Location
+        let cordinates = CLLocationCoordinate2D(latitude: 40.00, longitude: 50.00)
+        let region = CLCircularRegion(
+            center: cordinates,
+            radius: 100,
+            identifier: UUID().uuidString
+        )
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        let trigger = UNLocationNotificationTrigger(
+            region: region,
+            repeats: false
+        )
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request)
     }
