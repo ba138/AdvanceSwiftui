@@ -6,21 +6,28 @@
 //
 
 import SwiftUI
-
+struct MyCustomModel {
+    let title : String
+}
 struct HashableProtocolBootCamp: View {
-    let data : [String] =
+    let data : [MyCustomModel] =
     [
-        "One",
-        "Two",
-        "Three",
-        "Four"
+        MyCustomModel(title: "One"),
+        MyCustomModel(title: "Two"),
+        MyCustomModel(title: "Three"),
+        MyCustomModel(title: "Four"),
+
     ]
     var body: some View {
-        ForEach(data, id: \.self) { item in
-            Text(item)
-                .font(.headline)
-        }
-    }
+        ScrollView {
+            VStack (spacing : 20){
+                ForEach(data, id: \.self) { item in
+                    Text(item)
+                        .font(.headline)
+                }
+
+            }
+        }    }
 }
 
 #Preview {
