@@ -17,6 +17,7 @@ class ArrayModificationViewModel: ObservableObject {
 
     @Published var dataArray: [UserModel] = []
     @Published var filteredArray : [UserModel] = []
+    @Published var mappedArray : [String] = []
 
     init() {
         getUsers()
@@ -24,12 +25,28 @@ class ArrayModificationViewModel: ObservableObject {
     }
     func updateFilteredArray() {
         //sort
+        /*
 //        let sortedArray = dataArray.sorted { user1, user2 in
 //            user1.points > user2.points
 //        }
 //
 //        filteredArray = sortedArray
         filteredArray = dataArray.sorted(by: {$0.points > $1.points})
+         */
+        //Filter
+        /*
+//        filteredArray = dataArray.filter({ (user) -> Bool in
+////            return user.points > 5
+////            return user.isVerfied
+//            return user.name.contains("i")
+//        })
+        //short way
+        filteredArray = dataArray.filter({$0.name.contains("a")})
+         */
+        //Map
+        mappedArray = dataArray.map({ (user) -> String in
+            return user.name
+        })
     }
     func getUsers() {
         let user1 = UserModel(name: "Basit", points: 5, isVerfied: true)
@@ -53,6 +70,7 @@ struct ArrayBootCamp: View {
     var body: some View {
         ScrollView {
             VStack(spacing : 20) {
+                /*
                 ForEach(vm.filteredArray) { item in
                     VStack(alignment : .leading){
                         Text(item.name)
@@ -72,6 +90,12 @@ struct ArrayBootCamp: View {
                     .background(Color.blue.cornerRadius(10))
                     .padding(.horizontal)
                     
+                }
+                 */
+                VStack{
+                    ForEach(vm.mappedArray, id: \.self) {item in
+                        Text(item)
+                    }
                 }
             }
         }
