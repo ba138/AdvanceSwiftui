@@ -24,11 +24,12 @@ class ArrayModificationViewModel: ObservableObject {
     }
     func updateFilteredArray() {
         //sort
-        let sortedArray = dataArray.sorted { user1, user2 in
-            user1.points > user2.points
-        }
-
-        filteredArray = sortedArray
+//        let sortedArray = dataArray.sorted { user1, user2 in
+//            user1.points > user2.points
+//        }
+//
+//        filteredArray = sortedArray
+        filteredArray = dataArray.sorted(by: {$0.points > $1.points})
     }
     func getUsers() {
         let user1 = UserModel(name: "Basit", points: 5, isVerfied: true)
