@@ -27,13 +27,21 @@ class ArrayModificationViewModel: ObservableObject {
         let user3 = UserModel(name: "Touseef", points: 4, isVerfied: true)
         let user4 = UserModel(name: "Atizaz", points: 10, isVerfied: false)
 
-        dataArray = [user1, user2, user3, user4]
+        self.dataArray.append(
+            contentsOf: [user1, user2, user3, user4]
+)
     }
 }
 struct ArrayBootCamp: View {
     @State var vm = ArrayModificationViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            VStack(spacing : 20) {
+                ForEach(vm.dataArray) { item in
+                    Text(item.name)
+                }
+            }
+        }
     }
 }
 
