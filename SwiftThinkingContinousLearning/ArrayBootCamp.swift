@@ -16,11 +16,20 @@ struct UserModel : Identifiable{
 class ArrayModificationViewModel: ObservableObject {
 
     @Published var dataArray: [UserModel] = []
+    @Published var filteredArray : [UserModel] = []
 
     init() {
         getUsers()
+        updateFilteredArray()
     }
+    func updateFilteredArray() {
+        //sort
+        let sortedArray = dataArray.sorted { user1, user2 in
+            user1.points > user2.points
+        }
 
+        filteredArray = sortedArray
+    }
     func getUsers() {
         let user1 = UserModel(name: "Basit", points: 5, isVerfied: true)
         let user2 = UserModel(name: "Fayyaz", points: 5, isVerfied: true)
@@ -43,7 +52,7 @@ struct ArrayBootCamp: View {
     var body: some View {
         ScrollView {
             VStack(spacing : 20) {
-                ForEach(vm.dataArray) { item in
+                ForEach(vm.filteredArray) { item in
                     VStack(alignment : .leading){
                         Text(item.name)
                             .font(.headline)
