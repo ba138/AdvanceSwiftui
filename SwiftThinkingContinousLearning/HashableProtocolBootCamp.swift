@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
-struct MyCustomModel : Identifiable {
-    let id :String = UUID().uuidString
+struct MyCustomModel : Hashable {
     let title : String
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+    }
 }
 struct HashableProtocolBootCamp: View {
     let data : [MyCustomModel] =
@@ -22,11 +24,10 @@ struct HashableProtocolBootCamp: View {
     var body: some View {
         ScrollView {
             VStack (spacing : 20){
-                ForEach(data) { item in
+                ForEach(data, id: \.self) { item in
                     Text(item.title)
                         .font(.title)
-                }
-
+                    .bold()                }
             }
         }    }
 }
