@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FEA795C53009F7EA00C6927A /* CoreDatBootCamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA795C43009F7EA00C6927A /* CoreDatBootCamp.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FE36BA872FF78E2700F65EF0 /* SwiftThinkingContinousLearning.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftThinkingContinousLearning.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEA795C43009F7EA00C6927A /* CoreDatBootCamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDatBootCamp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		FE36BA7E2FF78E2600F65EF0 = {
 			isa = PBXGroup;
 			children = (
+				FEA795C43009F7EA00C6927A /* CoreDatBootCamp.swift */,
 				FE36BA892FF78E2700F65EF0 /* SwiftThinkingContinousLearning */,
 				FE36BA882FF78E2700F65EF0 /* Products */,
 			);
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEA795C53009F7EA00C6927A /* CoreDatBootCamp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

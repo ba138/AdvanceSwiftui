@@ -44,9 +44,11 @@ class ArrayModificationViewModel: ObservableObject {
         filteredArray = dataArray.filter({$0.name.contains("a")})
          */
         //Map
-        mappedArray = dataArray.map({ (user) -> String in
-            return user.name
-        })
+//        mappedArray = dataArray.map({ (user) -> String in
+//            return user.name
+//        })
+        //short way for map
+//        mappedArray = dataArray.map({$0.name})
     }
     func getUsers() {
         let user1 = UserModel(name: "Basit", points: 5, isVerfied: true)
