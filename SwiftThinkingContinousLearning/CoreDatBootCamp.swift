@@ -35,6 +35,14 @@ class CoreDataViewModel : ObservableObject {
         let newFruit = FruitsEntity(context: container.viewContext)
         newFruit.name = text
     }
+    func saveData(){
+        do{
+         try container.viewContext.save()
+
+        }catch let error{
+            print("Error saving data \(error)")
+        }
+    }
 }
 
 struct CoreDatBootCamp: View {
