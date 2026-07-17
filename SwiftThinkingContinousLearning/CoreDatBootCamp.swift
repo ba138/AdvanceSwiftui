@@ -10,7 +10,7 @@ import Combine
 import CoreData
 class CoreDataViewModel : ObservableObject {
     let container: NSPersistentContainer
-    @Published var saveEntity : [FruitsEntity] = []
+    @Published var saveEntityList : [FruitsEntity] = []
     init() {
         // Use your Core Data model name here instead of "SwiftThinkingContinousLearning" if different
         container = NSPersistentContainer(name: "FruitsContainer")
@@ -26,18 +26,20 @@ class CoreDataViewModel : ObservableObject {
     func fetchData(){
         let request = NSFetchRequest<FruitsEntity>(entityName: "FruitsEntity")
         do{
-         saveEntity =   try container.viewContext.fetch(request)
+         saveEntityList =   try container.viewContext.fetch(request)
         }catch let error {
             print("Error fetching entity \(error)")
         }
     }
-    func saveEntity(text : String){
+    func saveEntity(text: String) {
         let newFruit = FruitsEntity(context: container.viewContext)
         newFruit.name = text
+        saveData()
     }
     func saveData(){
         do{
          try container.viewContext.save()
+            fetchData()
 
         }catch let error{
             print("Error saving data \(error)")
@@ -47,8 +49,41 @@ class CoreDataViewModel : ObservableObject {
 
 struct CoreDatBootCamp: View {
     @StateObject var vm = CoreDataViewModel()
+    @State var fruitText: String = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            VStack(spacing : 20) {
+                TextField("Enter Fruit Name", text: $fruitText)
+                    .font(.headline)
+                    .padding(.leading)
+                    .frame(height: 55)
+                    .background(Color.gray.opacity(0.3))
+                    .cornerRadius(10)
+                    .padding()
+                Button {
+                    guard !fruitText.isEmpty else { return }
+                    vm.saveEntity(text: fruitText)
+                    fruitText = ""
+                } label: {
+                    Text("Add Fruit")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 55)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .background(.green)
+                        .cornerRadius(12)
+                        .padding()
+                }
+                List {
+                    ForEach(vm.saveEntityList) { item in
+                        Text(item.name ?? "")
+                    }
+                }
+                .listStyle(PlainListStyle())
+
+            }
+            .navigationTitle("Fruits")
+        }
     }
 }
 
