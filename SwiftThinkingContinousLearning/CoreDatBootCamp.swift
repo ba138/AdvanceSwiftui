@@ -36,6 +36,11 @@ class CoreDataViewModel : ObservableObject {
         newFruit.name = text
         saveData()
     }
+    func deleteEntity(indexSet :IndexSet){
+        guard let index = indexSet.first else{return}
+        let entity = saveEntityList[index]
+        container.viewContext.delete(entity)
+    }
     func saveData(){
         do{
          try container.viewContext.save()
@@ -78,8 +83,10 @@ struct CoreDatBootCamp: View {
                     ForEach(vm.saveEntityList) { item in
                         Text(item.name ?? "")
                     }
+                    .onDelete(perform: vm.deleteEntity)
                 }
                 .listStyle(PlainListStyle())
+                
 
             }
             .navigationTitle("Fruits")
