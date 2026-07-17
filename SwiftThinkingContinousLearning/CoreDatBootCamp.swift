@@ -31,6 +31,10 @@ class CoreDataViewModel : ObservableObject {
             print("Error fetching entity \(error)")
         }
     }
+    func saveEntity(text : String){
+        let newFruit = FruitsEntity(context: container.viewContext)
+        newFruit.name = text
+    }
 }
 
 struct CoreDatBootCamp: View {
