@@ -10,13 +10,25 @@ import Combine
 import CoreData
 class CoreDataViewModel : ObservableObject {
     let container: NSPersistentContainer
+    @Published var saveEntity : [FruitsEntity] = []
     init() {
         // Use your Core Data model name here instead of "SwiftThinkingContinousLearning" if different
         container = NSPersistentContainer(name: "FruitsContainer")
         container.loadPersistentStores { description, error in
             if let error = error {
                 print("Error loading Core Data store: \(error)")
+            }else{
+                print("Successfully load core data!")
             }
+        }
+        fetchData()
+    }
+    func fetchData(){
+        let request = NSFetchRequest<FruitsEntity>(entityName: "FruitsEntity")
+        do{
+         saveEntity =   try container.viewContext.fetch(request)
+        }catch let error {
+            print("Error fetching entity \(error)")
         }
     }
 }
