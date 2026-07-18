@@ -31,9 +31,18 @@ class CoreDataManager {
 }
 class CoreDataRelationShipViewModel : ObservableObject{
     
-   
-    
+    let manager = CoreDataManager.cm
+    @Published var business : [BusinessEntity] = []
+    func addBusinees(){
+        let newBusiness = BusinessEntity(context: manager.context)
+        newBusiness.name = "Apple"
+        save()
+    }
+    func save(){
+        manager.saveData()
+    }
 }
+
 struct CoreDataRelationShipBootCamp: View {
     @StateObject var vm = CoreDataRelationShipViewModel()
     var body: some View {
