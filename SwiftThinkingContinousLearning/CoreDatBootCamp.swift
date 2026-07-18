@@ -40,7 +40,7 @@ class CoreDataViewModel : ObservableObject {
         let currentName  = entity.name ?? ""
         let newName = currentName + "!"
         entity.name = newName
-        saveData()
+        saveData() 
     }
     func deleteEntity(indexSet :IndexSet){
         guard let index = indexSet.first else{return}
