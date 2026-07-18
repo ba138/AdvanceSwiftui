@@ -13,7 +13,7 @@ class CoreDataManager {
     let container : NSPersistentContainer
     let context : NSManagedObjectContext
     init(){
-        container = NSPersistentContainer(name: "")
+        container = NSPersistentContainer(name: "CoreDataContainer")
         container.loadPersistentStores { (description , error) in
             if let error = error {
                 print("Loading error \(error)")
@@ -24,6 +24,7 @@ class CoreDataManager {
     func saveData(){
         do{
             try context.save()
+            print("save core data successfuly")
         }catch let error {
             print("Error saving core data \(error)")
         }
@@ -46,7 +47,26 @@ class CoreDataRelationShipViewModel : ObservableObject{
 struct CoreDataRelationShipBootCamp: View {
     @StateObject var vm = CoreDataRelationShipViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            ScrollView(content: {
+                VStack{
+                    Button {
+                        vm.addBusinees()
+
+                    } label: {
+                    Text("Perfrom Action")
+                
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 55)
+                        .background(.green)
+                        .cornerRadius(12)
+                        .padding()
+                    }
+             }
+            })
+            .navigationTitle("RelationShips")
+        }
     }
 }
 
