@@ -34,10 +34,24 @@ class CoreDataRelationShipViewModel : ObservableObject{
     
     let manager = CoreDataManager.cm
     @Published var business : [BusinessEntity] = []
+    init(){
+        getBusiness()
+    }
+    func getBusiness(){
+        let request = NSFetchRequest<BusinessEntity>(entityName: "BusinessEntity")
+        do {
+      business = try manager.context.fetch(request)
+            print("fetched business")
+
+        }catch let error {
+            print("Error While fetching the businesses\(error)")
+        }
+    }
     func addBusinees(){
         let newBusiness = BusinessEntity(context: manager.context)
-        newBusiness.name = "Apple"
+        newBusiness.name = "MicroSoft"
         save()
+        getBusiness()
     }
     func save(){
         manager.saveData()
@@ -48,25 +62,31 @@ struct CoreDataRelationShipBootCamp: View {
     @StateObject var vm = CoreDataRelationShipViewModel()
     var body: some View {
         NavigationView {
-            ScrollView(content: {
-                VStack{
-                    Button {
-                        vm.addBusinees()
-
-                    } label: {
+            VStack{
+                Button {
+                    vm.addBusinees()
+                    
+                } label: {
                     Text("Perfrom Action")
-                
+                    
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 55)
                         .background(.green)
                         .cornerRadius(12)
                         .padding()
+                }
+                List {
+                    ForEach(vm.business) { business in
+                        Text(business.name ?? "")
                     }
-             }
-            })
+                }.listStyle(.plain)
+            }
             .navigationTitle("RelationShips")
+
         }
+
+         
     }
 }
 
