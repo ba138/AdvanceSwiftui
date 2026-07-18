@@ -7,8 +7,31 @@
 
 import SwiftUI
 import Combine
+import CoreData
+class CoreDataManager {
+    static let cm = CoreDataManager()
+    let container : NSPersistentContainer
+    let context : NSManagedObjectContext
+    init(){
+        container = NSPersistentContainer(name: "")
+        container.loadPersistentStores { (description , error) in
+            if let error = error {
+                print("Loading error \(error)")
+            }
+        }
+        context = container.viewContext
+    }
+    func saveData(){
+        do{
+            try context.save()
+        }catch let error {
+            print("Error saving core data \(error)")
+        }
+    }
+}
 class CoreDataRelationShipViewModel : ObservableObject{
-    let instance = CoreDataRelationShipBootCamp()
+    
+   
     
 }
 struct CoreDataRelationShipBootCamp: View {
