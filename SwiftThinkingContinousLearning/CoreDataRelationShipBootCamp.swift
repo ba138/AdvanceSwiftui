@@ -8,117 +8,205 @@
 import SwiftUI
 import Combine
 import CoreData
+
 class CoreDataManager {
+
     static let cm = CoreDataManager()
-    let container : NSPersistentContainer
-    let context : NSManagedObjectContext
-    init(){
+
+    let container: NSPersistentContainer
+    let context: NSManagedObjectContext
+
+    init() {
         container = NSPersistentContainer(name: "CoreDataContainer")
-        container.loadPersistentStores { (description , error) in
+
+        container.loadPersistentStores { description, error in
             if let error = error {
-                print("Loading error \(error)")
+                print("Loading error: \(error)")
             }
         }
+
         context = container.viewContext
     }
-    func saveData(){
-        do{
+
+    func saveData() {
+        do {
             try context.save()
-            print("save core data successfuly")
-        }catch let error {
-            print("Error saving core data \(error)")
+            print("Saved Core Data successfully")
+        } catch {
+            print("Error saving Core Data: \(error)")
         }
     }
 }
-class CoreDataRelationShipViewModel : ObservableObject{
-    
+
+class CoreDataRelationShipViewModel: ObservableObject {
+
     let manager = CoreDataManager.cm
-    @Published var business : [BusinessEntity] = []
-    init(){
+
+    @Published var business: [BusinessEntity] = []
+
+    init() {
         getBusiness()
     }
-    func getBusiness(){
-        let request = NSFetchRequest<BusinessEntity>(entityName: "BusinessEntity")
-        do {
-      business = try manager.context.fetch(request)
-            print("fetched business")
 
-        }catch let error {
-            print("Error While fetching the businesses\(error)")
+    func getBusiness() {
+        let request = NSFetchRequest<BusinessEntity>(entityName: "BusinessEntity")
+
+        do {
+            business = try manager.context.fetch(request)
+            print("Fetched \(business.count) businesses")
+        } catch {
+            print("Error fetching businesses: \(error)")
         }
     }
-    func addBusinees(){
+
+    func addBusiness() {
+
+        // Create Business
         let newBusiness = BusinessEntity(context: manager.context)
-        newBusiness.name = "MicroSoft"
+        newBusiness.name = "Amazon"
+
+        // Create Department
+        let newDepartment = DepartmentEntity(context: manager.context)
+        newDepartment.name = "Marketing"
+
+        // Link Business -> Department
+        newBusiness.addToDepartments(newDepartment)
+//         Uncomment if you also want an employee
+               let employee = EmployeeEntity(context: manager.context)
+               employee.name = "Basit Ali"
+        
+               newBusiness.addToEmployees(employee)
+
         save()
+    }
+
+    func save() {
+        manager.saveData()
         getBusiness()
     }
-    func save(){
-        manager.saveData()
+    func deleteAllData() {
+
+        let entityNames = [
+            "BusinessEntity",
+            "DepartmentEntity",
+            "EmployeeEntity"
+        ]
+
+        entityNames.forEach { entityName in
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+            do {
+                try manager.context.execute(deleteRequest)
+                print("Deleted all \(entityName)")
+            } catch {
+                print("Error deleting \(entityName): \(error)")
+            }
+        }
+
+        save()
     }
 }
 
 struct CoreDataRelationShipBootCamp: View {
+
     @StateObject var vm = CoreDataRelationShipViewModel()
+
     var body: some View {
+
         NavigationView {
-            VStack{
-                Button {
-                    vm.addBusinees()
-                    
-                } label: {
-                    Text("Perfrom Action")
-                    
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 55)
-                        .background(.green)
-                        .cornerRadius(12)
-                        .padding()
+
+            VStack {
+
+                Button("Add Business") {
+                    vm.addBusiness()
                 }
-                ScrollView (.horizontal,showsIndicators: true){
-                    HStack(alignment : .top
-                    ) {
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color.blue)
+                .cornerRadius(12)
+                .padding(.horizontal)
+
+                ScrollView(.horizontal, showsIndicators: true) {
+
+                    HStack(alignment: .top) {
+
                         ForEach(vm.business) { business in
                             BusinessView(entity: business)
                         }
                     }
+                    .padding(.horizontal)
                 }
-               
+                Button("Clear Core Data") {
+                    vm.deleteAllData()
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color.red)
+                .cornerRadius(12)
+                .padding(.horizontal)
+
+                Spacer()
             }
-            .navigationTitle("RelationShips")
-
+            .navigationTitle("Relationships")
         }
-
-         
     }
 }
-struct BusinessView : View{
-    let entity : BusinessEntity
-    var body : some View {
-        VStack( alignment : .leading ,spacing: 20) {
-            Text("Name : \(entity.name ?? "")")
+
+struct BusinessView: View {
+
+    let entity: BusinessEntity
+
+    var body: some View {
+
+        VStack(alignment: .leading, spacing: 15) {
+
+            Text("Business")
+                .font(.headline)
+
+            Text(entity.name ?? "Unknown")
+
+            Divider()
+
+            Text("Departments")
                 .bold()
-            if let department = entity.departments? .allObjects  as?[BusinessEntity]{
-                Text("Department")
-                    .bold()
-                ForEach(department) { department in
+
+            if let departments = entity.departments?.allObjects as? [DepartmentEntity],
+               !departments.isEmpty {
+
+                ForEach(departments) { department in
                     Text(department.name ?? "")
                 }
+
+            } else {
+                Text("No Departments")
+                    .foregroundColor(.gray)
             }
-            if let employee = entity.employees? .allObjects as?[EmployeeEntity]{
-                Text("Employee name")
-                    .bold()
-                ForEach(employee) { employee in
+
+            Divider()
+
+            Text("Employees")
+                .bold()
+
+            if let employees = entity.employees?.allObjects as? [EmployeeEntity],
+               !employees.isEmpty {
+
+                ForEach(employees) { employee in
                     Text(employee.name ?? "")
                 }
+
+            } else {
+                Text("No Employees")
+                    .foregroundColor(.gray)
             }
         }
         .padding()
-        .frame(maxWidth: 300 ,alignment: .leading)
-        .background(Color.gray.opacity(0.3))
-        .cornerRadius(10)
-        .shadow(radius: 10)
+        .frame(width: 280, alignment: .leading)
+        .background(Color.gray.opacity(0.2))
+        .cornerRadius(12)
+        .shadow(radius: 5)
     }
 }
 
