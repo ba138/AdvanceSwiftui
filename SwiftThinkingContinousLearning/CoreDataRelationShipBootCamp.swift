@@ -43,6 +43,7 @@ class CoreDataRelationShipViewModel: ObservableObject {
     let manager = CoreDataManager.cm
 
     @Published var business: [BusinessEntity] = []
+    @Published var departmentd : [DepartmentEntity] = []
 
     init() {
         getBusiness()
@@ -127,6 +128,15 @@ struct CoreDataRelationShipBootCamp: View {
                 .background(Color.blue)
                 .cornerRadius(12)
                 .padding(.horizontal)
+                Button("Clear Core Data") {
+                    vm.deleteAllData()
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 55)
+                .background(Color.red)
+                .cornerRadius(12)
+                .padding(.horizontal)
 
                 ScrollView(.horizontal, showsIndicators: true) {
 
@@ -138,15 +148,17 @@ struct CoreDataRelationShipBootCamp: View {
                     }
                     .padding(.horizontal)
                 }
-                Button("Clear Core Data") {
-                    vm.deleteAllData()
+                ScrollView(.horizontal, showsIndicators: true) {
+
+                    HStack(alignment: .top) {
+
+                        ForEach(vm.departmentd) { item in
+                            DepartmentView(entity: item)
+                        }
+                    }
+                    .padding(.horizontal)
                 }
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 55)
-                .background(Color.red)
-                .cornerRadius(12)
-                .padding(.horizontal)
+                
 
                 Spacer()
             }
@@ -182,6 +194,60 @@ struct BusinessView: View {
 
             } else {
                 Text("No Departments")
+                    .foregroundColor(.gray)
+            }
+
+            Divider()
+
+            Text("Employees")
+                .bold()
+
+            if let employees = entity.employees?.allObjects as? [EmployeeEntity],
+               !employees.isEmpty {
+
+                ForEach(employees) { employee in
+                    Text(employee.name ?? "")
+                }
+
+            } else {
+                Text("No Employees")
+                    .foregroundColor(.gray)
+            }
+        }
+        .padding()
+        .frame(width: 280, alignment: .leading)
+        .background(Color.gray.opacity(0.2))
+        .cornerRadius(12)
+        .shadow(radius: 5)
+    }
+}
+struct DepartmentView: View {
+
+    let entity: DepartmentEntity
+
+    var body: some View {
+
+        VStack(alignment: .leading, spacing: 15) {
+
+            Text("Department")
+                .font(.headline)
+
+            Text(entity.name ?? "Unknown")
+
+            Divider()
+
+            Text("Business")
+                .bold()
+
+            if let business = entity.businesses?.allObjects as? [BusinessEntity],
+               !business.isEmpty {
+
+                ForEach(business) { item in
+                    Text(item.name ?? "")
+                }
+
+            } else {
+                Text("No Business")
                     .foregroundColor(.gray)
             }
 
