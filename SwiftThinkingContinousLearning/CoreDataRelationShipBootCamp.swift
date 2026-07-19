@@ -59,22 +59,31 @@ class CoreDataRelationShipViewModel: ObservableObject {
             print("Error fetching businesses: \(error)")
         }
     }
+    func getDepartment() {
+        let request = NSFetchRequest<DepartmentEntity>(entityName: "DepartmentEntity")
 
+        do {
+            departmentd = try manager.context.fetch(request)
+            print("Fetched \(departmentd.count) department")
+        } catch {
+            print("Error fetching department: \(error)")
+        }
+    }
     func addBusiness() {
 
         // Create Business
         let newBusiness = BusinessEntity(context: manager.context)
-        newBusiness.name = "Amazon"
+        newBusiness.name = "Apple"
 
         // Create Department
         let newDepartment = DepartmentEntity(context: manager.context)
-        newDepartment.name = "Marketing"
+        newDepartment.name = "Sells"
 
         // Link Business -> Department
         newBusiness.addToDepartments(newDepartment)
 //         Uncomment if you also want an employee
                let employee = EmployeeEntity(context: manager.context)
-               employee.name = "Basit Ali"
+               employee.name = "Hussain Ali"
         
                newBusiness.addToEmployees(employee)
 
@@ -84,6 +93,7 @@ class CoreDataRelationShipViewModel: ObservableObject {
     func save() {
         manager.saveData()
         getBusiness()
+        getDepartment()
     }
     func deleteAllData() {
 
