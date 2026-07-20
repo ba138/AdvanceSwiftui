@@ -48,6 +48,7 @@ class CoreDataRelationShipViewModel: ObservableObject {
 
     init() {
         getBusiness()
+        getEmployees()
     }
 
     func getBusiness() {
@@ -178,7 +179,7 @@ struct CoreDataRelationShipBootCamp: View {
 
                         ForEach(vm.employees) { item in
 //                            DepartmentView(entity: item)
-                            EmployeeView(employee: item)
+                            EmployeeView(entity: item)
                         }
                     }
                     .padding(.horizontal)
@@ -193,7 +194,7 @@ struct CoreDataRelationShipBootCamp: View {
 }
 struct EmployeeView: View {
 
-    let employee: EmployeeEntity
+    let entity: EmployeeEntity
 
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -205,16 +206,18 @@ struct EmployeeView: View {
 
         VStack(alignment: .leading, spacing: 6) {
 
-            Text("Name: \(employee.name ?? "Unknown")")
+            Text("Name: \(entity.name ?? "Unknown")")
 
-            Text("Age: \(employee.age)")
+            Text("Age: \(entity.age)")
             
 
-            if let joinedDate = employee.dateJoined {
+            if let joinedDate = entity.dateJoined {
                 Text("Joined: \(dateFormatter.string(from: joinedDate))")
             } else {
                 Text("Joined: N/A")
             }
+            Text("Business: \(entity.business?.name ?? "N/A")")
+            
 
         }
         .padding(10)
