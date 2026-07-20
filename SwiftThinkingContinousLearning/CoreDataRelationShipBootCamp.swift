@@ -44,6 +44,7 @@ class CoreDataRelationShipViewModel: ObservableObject {
 
     @Published var business: [BusinessEntity] = []
     @Published var departmentd : [DepartmentEntity] = []
+    @Published  var employees : [EmployeeEntity] = []
 
     init() {
         getBusiness()
