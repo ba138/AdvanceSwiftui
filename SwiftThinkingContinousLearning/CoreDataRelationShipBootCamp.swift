@@ -60,6 +60,16 @@ class CoreDataRelationShipViewModel: ObservableObject {
             print("Error fetching businesses: \(error)")
         }
     }
+    func getEmployees() {
+        let request = NSFetchRequest<EmployeeEntity>(entityName: "EmployeeEntity")
+
+        do {
+            employees = try manager.context.fetch(request)
+            print("Fetched \(business.count) Employess")
+        } catch {
+            print("Error fetching businesses: \(error)")
+        }
+    }
     func getDepartment() {
         let request = NSFetchRequest<DepartmentEntity>(entityName: "DepartmentEntity")
 
@@ -84,7 +94,7 @@ class CoreDataRelationShipViewModel: ObservableObject {
         newBusiness.addToDepartments(newDepartment)
 //         Uncomment if you also want an employee
                let employee = EmployeeEntity(context: manager.context)
-               employee.name = "Hussain Ali"
+               employee.name = " Ali"
         employee.age = 26
         employee.dateJoined = Date.now
         
@@ -97,6 +107,7 @@ class CoreDataRelationShipViewModel: ObservableObject {
         manager.saveData()
         getBusiness()
         getDepartment()
+        getEmployees()
     }
     func deleteAllData() {
 
@@ -165,8 +176,9 @@ struct CoreDataRelationShipBootCamp: View {
 
                     HStack(alignment: .top) {
 
-                        ForEach(vm.departmentd) { item in
-                            DepartmentView(entity: item)
+                        ForEach(vm.employees) { item in
+//                            DepartmentView(entity: item)
+                            EmployeeView(employee: item)
                         }
                     }
                     .padding(.horizontal)
@@ -179,7 +191,38 @@ struct CoreDataRelationShipBootCamp: View {
         }
     }
 }
+struct EmployeeView: View {
 
+    let employee: EmployeeEntity
+
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
+    }()
+
+    var body: some View {
+
+        VStack(alignment: .leading, spacing: 6) {
+
+            Text("Name: \(employee.name ?? "Unknown")")
+
+            Text("Age: \(employee.age)")
+            
+
+            if let joinedDate = employee.dateJoined {
+                Text("Joined: \(dateFormatter.string(from: joinedDate))")
+            } else {
+                Text("Joined: N/A")
+            }
+
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.blue.opacity(0.1))
+        .cornerRadius(8)
+    }
+}
 struct BusinessView: View {
 
     let entity: BusinessEntity
