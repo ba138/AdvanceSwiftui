@@ -84,6 +84,8 @@ class CoreDataRelationShipViewModel: ObservableObject {
 //         Uncomment if you also want an employee
                let employee = EmployeeEntity(context: manager.context)
                employee.name = "Hussain Ali"
+        employee.age = 26
+        employee.dateJoined = Date.now
         
                newBusiness.addToEmployees(employee)
 
