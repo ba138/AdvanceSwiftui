@@ -8,6 +8,7 @@
 import SwiftUI
 import Combine
 class BackgroundThreadViewModel : ObservableObject {
+    @Published var dataArray : [String] = []
     
 }
 struct BackgroundThreadBootCamp: View {
@@ -19,6 +20,9 @@ struct BackgroundThreadBootCamp: View {
                 Text("Loading Data")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
+                ForEach(viewModel.dataArray, id: \.self) { item in
+                    Text(item)
+                }
             }
         }
     }
