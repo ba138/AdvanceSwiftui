@@ -13,7 +13,11 @@ class BackgroundThreadViewModel : ObservableObject {
     {
         DispatchQueue.global().async {
             let newData = self.downloadData()
-            self.dataArray = newData
+            // for updating ui we use main thread not background thread there i use main
+            DispatchQueue.main.async {
+                self.dataArray = newData
+
+            }
         }
     
     }
