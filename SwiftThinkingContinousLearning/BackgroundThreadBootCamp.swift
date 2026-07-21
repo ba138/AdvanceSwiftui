@@ -9,7 +9,19 @@ import SwiftUI
 import Combine
 class BackgroundThreadViewModel : ObservableObject {
     @Published var dataArray : [String] = []
-    
+    func fetchData()
+    {
+     let newData = downloadData()
+        dataArray = newData
+    }
+   private func downloadData()-> [String]{
+        var data : [String] = []
+        for x in 0..<100 {
+            data.append("\(x)")
+            print(data)
+        }
+        return data
+    }
 }
 struct BackgroundThreadBootCamp: View {
     @StateObject var viewModel = BackgroundThreadViewModel()
@@ -20,6 +32,9 @@ struct BackgroundThreadBootCamp: View {
                 Text("Loading Data")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
+                    .onTapGesture {
+                        viewModel.fetchData()
+                    }
                 ForEach(viewModel.dataArray, id: \.self) { item in
                     Text(item)
                 }
