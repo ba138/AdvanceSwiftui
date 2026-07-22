@@ -9,6 +9,9 @@ import SwiftUI
 import Combine
 struct WeakSelfBootCamp: View {
     @AppStorage("count") var count : Int?
+    init(){
+        count = 0
+    }
     var body: some View {
         NavigationView {
           NavigationLink("Navigate", destination: WeakSelfScreen())
@@ -56,7 +59,11 @@ class WeakSelfBootViewModel : ObservableObject {
         UserDefaults.standard.set(currentCount-1, forKey: "count")
     }
     func fetchData(){
-      data = "new data"
+        DispatchQueue.main.asyncAfter(deadline: .now() + 500){ [weak self] in
+            self?.data = "new data"
+
+            
+        }
     }
 }
 #Preview {
