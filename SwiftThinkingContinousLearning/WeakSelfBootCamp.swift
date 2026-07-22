@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import Combine
 struct WeakSelfBootCamp: View {
     var body: some View {
         NavigationView {
@@ -19,6 +19,16 @@ struct WeakSelfScreen : View {
         Text("Weak Self Screen")
             .font(.largeTitle)
             .foregroundColor(Color.red)
+    }
+}
+class WeakSelfBootViewModel : ObservableObject {
+    @Published var data :String? = nil
+    init(){
+     print("getting data")
+        fetchData()
+    }
+    func fetchData(){
+      data = "new data"
     }
 }
 #Preview {
