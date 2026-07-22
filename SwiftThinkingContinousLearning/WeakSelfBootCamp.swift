@@ -15,10 +15,16 @@ struct WeakSelfBootCamp: View {
     }
 }
 struct WeakSelfScreen : View {
+    @StateObject var vm = WeakSelfBootViewModel()
     var body: some View {
-        Text("Weak Self Screen")
-            .font(.largeTitle)
-            .foregroundColor(Color.red)
+        VStack{
+            Text("Weak Self Screen")
+                .font(.largeTitle)
+                .foregroundColor(Color.red)
+            if let data = vm.data {
+                Text(data)
+            }
+        }
     }
 }
 class WeakSelfBootViewModel : ObservableObject {
@@ -26,6 +32,9 @@ class WeakSelfBootViewModel : ObservableObject {
     init(){
      print("getting data")
         fetchData()
+    }
+    deinit{
+        print("deinit data")
     }
     func fetchData(){
       data = "new data"
