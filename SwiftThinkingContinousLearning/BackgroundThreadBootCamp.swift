@@ -35,7 +35,7 @@ struct BackgroundThreadBootCamp: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
+            LazyVStack(spacing: 20) {
                 Text("Loading Data")
                     .font(.largeTitle)
                     .fontWeight(.semibold)
