@@ -14,7 +14,11 @@ struct MovieModel {
 struct TypealiasBootCamp: View {
     @State var item : MovieModel = MovieModel(title: "j", director: "Jhon", count: 1200)
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack{
+            Text(item.title)
+            Text(item.director)
+            Text("\(item.count)")
+        }
     }
 }
 
