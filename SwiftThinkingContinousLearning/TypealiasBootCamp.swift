@@ -11,8 +11,11 @@ struct MovieModel {
     let director : String
     let count : Int
 }
+typealias TVModel = MovieModel
 struct TypealiasBootCamp: View {
     @State var item : MovieModel = MovieModel(title: "j", director: "Jhon", count: 1200)
+    @State var tvItem : TVModel = MovieModel(title: "j", director: "Jhon", count: 1200)
+
     var body: some View {
         VStack{
             Text(item.title)
