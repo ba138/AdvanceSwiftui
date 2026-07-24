@@ -10,11 +10,15 @@ import Combine
 class EscapingViewModel : ObservableObject {
     @Published var text : String = "Hello"
     func getData(){
-       let newData = downloadData()
-        text = newData
+        downloadData2 { data in
+            text = data
+        }
     }
     func downloadData()-> String {
         return "New data"
+    }
+    func downloadData2(handler:(_ data : String)-> Void){
+        handler("new data 2")
     }
 }
 struct EscapingBootCamp: View {
