@@ -10,8 +10,8 @@ import Combine
 class EscapingViewModel : ObservableObject {
     @Published var text : String = "Hello"
     func getData(){
-        downloadData3 { [weak self] data in
-            self?.text = data
+        downloadData4 { [weak self] DownloadResult in
+            self?.text = DownloadResult.text
         }
     }
     func downloadData()-> String {
@@ -22,10 +22,20 @@ class EscapingViewModel : ObservableObject {
     }
     func downloadData3(handler:@escaping (_ data : String)-> Void){
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
-            handler("new data 2")
+            handler("new data 3")
 
         })
     }
+    func downloadData4(handler:@escaping (DownloadResult)-> Void){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            let result = DownloadResult(text: "Data 4")
+handler(result)
+        })
+    }
+
+}
+struct DownloadResult {
+    let text : String
 }
 struct EscapingBootCamp: View {
     @StateObject var vm = EscapingViewModel()
