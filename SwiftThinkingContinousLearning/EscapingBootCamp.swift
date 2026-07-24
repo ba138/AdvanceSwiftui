@@ -9,6 +9,13 @@ import SwiftUI
 import Combine
 class EscapingViewModel : ObservableObject {
     @Published var text : String = "Hello"
+    func getData(){
+       let newData = downloadData()
+        text = newData
+    }
+    func downloadData()-> String {
+        return "New data"
+    }
 }
 struct EscapingBootCamp: View {
     @StateObject var vm = EscapingViewModel()
