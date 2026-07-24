@@ -10,8 +10,8 @@ import Combine
 class EscapingViewModel : ObservableObject {
     @Published var text : String = "Hello"
     func getData(){
-        downloadData2 { data in
-            text = data
+        downloadData3 { [weak self] data in
+            self?.text = data
         }
     }
     func downloadData()-> String {
@@ -19,6 +19,12 @@ class EscapingViewModel : ObservableObject {
     }
     func downloadData2(handler:(_ data : String)-> Void){
         handler("new data 2")
+    }
+    func downloadData3(handler:@escaping (_ data : String)-> Void){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            handler("new data 2")
+
+        })
     }
 }
 struct EscapingBootCamp: View {
@@ -28,6 +34,9 @@ struct EscapingBootCamp: View {
             .font(.largeTitle)
             .fontWeight(.semibold)
             .foregroundColor(.blue)
+            .onTapGesture {
+                vm.getData()
+            }
     }
 }
 
