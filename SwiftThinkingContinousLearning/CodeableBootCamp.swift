@@ -7,7 +7,8 @@
 
 import SwiftUI
 import Combine
-struct CustomerModel : Identifiable,Decodable {
+struct CustomerModel : Identifiable,Decodable,Encodable
+{
     let id : String
     let name : String
     let point : Int
@@ -35,6 +36,13 @@ struct CustomerModel : Identifiable,Decodable {
 
         
     }
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.name, forKey: .name)
+        try container.encode(self.point, forKey: .point)
+        try container.encode(self.isOPremium, forKey: .isOPremium)
+    }
 }
 class CustomerViewModel : ObservableObject {
     @Published var customer : CustomerModel? = nil
@@ -43,11 +51,12 @@ class CustomerViewModel : ObservableObject {
     }
     func getData(){
         guard let data = getJson() else {return}
-        do{
-            self.customer = try JSONDecoder().decode(CustomerModel.self, from: data)
-        } catch let error {
-            print("error")
-        }
+        self.customer = try? JSONDecoder().decode(CustomerModel.self, from: data)
+//        do{
+//
+//        } catch let error {
+//            print("error")
+//        }
 //        if
 //            let localData = try? JSONSerialization.jsonObject(with: data, options: []),
 //            let dictionary = localData as? [String:Any],
@@ -61,14 +70,17 @@ class CustomerViewModel : ObservableObject {
 //        }
     }
     func getJson() -> Data? {
-        let dictionary: [String: Any] = [
-            "id": "12345",
-            "name": "Ali",
-            "point": 100,
-            "isOPremium": true
-        ]
+        let customer = CustomerModel(id: "111", name: "Basit Ali", point: 12, isOPremium: true)
+        let jsonData = try? JSONEncoder().encode(customer)
+//        let dictionary: [String: Any] = [
+//            "id": "12345",
+//            "name": "Ali",
+//            "point": 100,
+//            "isOPremium": true
+//        ]
 
-        return try? JSONSerialization.data(withJSONObject: dictionary)
+//        return try? JSONSerialization.data(withJSONObject: dictionary)
+        return jsonData
     }
 }
 
