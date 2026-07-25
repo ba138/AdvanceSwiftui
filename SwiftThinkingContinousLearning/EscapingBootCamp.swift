@@ -10,7 +10,7 @@ import Combine
 class EscapingViewModel : ObservableObject {
     @Published var text : String = "Hello"
     func getData(){
-        downloadData4 { [weak self] DownloadResult in
+        downloadData5 { [weak self] DownloadResult in
             self?.text = DownloadResult.text
         }
     }
@@ -32,11 +32,18 @@ class EscapingViewModel : ObservableObject {
 handler(result)
         })
     }
+    func downloadData5(handler:@escaping DownloadData){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            let result = DownloadResult(text: "Data 4")
+handler(result)
+        })
+    }
 
 }
 struct DownloadResult {
     let text : String
 }
+typealias DownloadData = (DownloadResult) -> ()
 struct EscapingBootCamp: View {
     @StateObject var vm = EscapingViewModel()
     var body: some View {
