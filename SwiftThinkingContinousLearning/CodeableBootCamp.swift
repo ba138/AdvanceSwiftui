@@ -7,42 +7,42 @@
 
 import SwiftUI
 import Combine
-struct CustomerModel : Identifiable,Decodable,Encodable
+struct CustomerModel : Identifiable, Codable
 {
     let id : String
     let name : String
     let point : Int
     let isOPremium : Bool
-    enum CodingKeys : String ,CodingKey {
-        case id
-        case name
-        case point
-        case isOPremium
-    }
-    init(id: String, name: String, point: Int, isOPremium: Bool) {
-        self.id = id
-        self.name = name
-        self.point = point
-        self.isOPremium = isOPremium
-    }
-    init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(String.self, forKey: .id)
-        self.name = try container.decode(String.self, forKey: .name)
-
-        self.point = try container.decode(Int.self, forKey: .point)
-
-        self.isOPremium = try container.decode(Bool.self, forKey: .isOPremium)
-
-        
-    }
-    func encode(to encoder: any Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.id, forKey: .id)
-        try container.encode(self.name, forKey: .name)
-        try container.encode(self.point, forKey: .point)
-        try container.encode(self.isOPremium, forKey: .isOPremium)
-    }
+//    enum CodingKeys : String ,CodingKey {
+//        case id
+//        case name
+//        case point
+//        case isOPremium
+//    }
+//    init(id: String, name: String, point: Int, isOPremium: Bool) {
+//        self.id = id
+//        self.name = name
+//        self.point = point
+//        self.isOPremium = isOPremium
+//    }
+//    init(from decoder: any Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        self.id = try container.decode(String.self, forKey: .id)
+//        self.name = try container.decode(String.self, forKey: .name)
+//
+//        self.point = try container.decode(Int.self, forKey: .point)
+//
+//        self.isOPremium = try container.decode(Bool.self, forKey: .isOPremium)
+//
+//        
+//    }
+//    func encode(to encoder: any Encoder) throws {
+//        var container = encoder.container(keyedBy: CodingKeys.self)
+//        try container.encode(self.id, forKey: .id)
+//        try container.encode(self.name, forKey: .name)
+//        try container.encode(self.point, forKey: .point)
+//        try container.encode(self.isOPremium, forKey: .isOPremium)
+//    }
 }
 class CustomerViewModel : ObservableObject {
     @Published var customer : CustomerModel? = nil
