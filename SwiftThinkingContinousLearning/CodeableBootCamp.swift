@@ -14,7 +14,23 @@ struct CustomerModel : Identifiable {
     let isOPremium : Bool
 }
 class CustomerViewModel : ObservableObject {
-    @Published var customer : CustomerModel? = CustomerModel(id: "1", name: "Basit", point: 100, isOPremium: true)
+    @Published var customer : CustomerModel? = nil
+    init(){
+        
+    }
+    func getData(){
+        guard let data = getJson() else {return}
+    }
+    func getJson() -> Data? {
+        let dictionary: [String: Any] = [
+            "id": "12345",
+            "name": "Ali",
+            "point": 100,
+            "isOPremium": true
+        ]
+
+        return try? JSONSerialization.data(withJSONObject: dictionary)
+    }
 }
 
 struct CodeableBootCamp: View {
@@ -24,7 +40,7 @@ struct CodeableBootCamp: View {
             Text(customer.name)
             Text(customer.id)
             Text("\(customer.point)")
-            Text("\(customer.isOPremium)")
+            Text("\(customer.isOPremium.description)")
         }    }
 }
 
