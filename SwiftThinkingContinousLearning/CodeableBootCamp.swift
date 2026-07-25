@@ -16,10 +16,21 @@ struct CustomerModel : Identifiable {
 class CustomerViewModel : ObservableObject {
     @Published var customer : CustomerModel? = nil
     init(){
-        
+      getData()
     }
     func getData(){
         guard let data = getJson() else {return}
+        if
+            let localData = try? JSONSerialization.jsonObject(with: data, options: []),
+            let dictionary = localData as? [String:Any],
+            let id = dictionary["id"] as? String,
+            let name = dictionary["name"] as? String,
+            let point = dictionary["point"] as? Int,
+            let isOPremium = dictionary["isOPremium"] as? Bool
+        {
+           let newCustomer = CustomerModel(id: id, name: name, point: point, isOPremium: isOPremium)
+            customer = newCustomer
+        }
     }
     func getJson() -> Data? {
         let dictionary: [String: Any] = [
