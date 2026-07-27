@@ -14,6 +14,7 @@ struct PostModel : Identifiable , Codable {
     let body : String
 }
 class DownloadViewModel : ObservableObject {
+    @Published var post : [PostModel] = []
     init(){
         getPosts()
     }
@@ -40,6 +41,13 @@ class DownloadViewModel : ObservableObject {
             print(data)
             let jsonStirng = String(data: data, encoding: .utf8)
             print(jsonStirng)
+            guard let newPost = try? JSONDecoder().decode(PostModel.self, from: data) else {
+                return
+            }
+            DispatchQueue.main.async { [weak self] in
+                self?.post.append(newPost)
+
+            }
         }.resume()
     }
 }
