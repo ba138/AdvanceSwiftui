@@ -7,9 +7,15 @@
 
 import SwiftUI
 import Combine
+struct PostModel : Identifiable , Codable {
+    let userId : Int
+    let id : Int
+    let title : String
+    let body : String
+}
 class DownloadViewModel : ObservableObject {
     init(){
-        
+        getPosts()
     }
     func getPosts(){
         guard  let url = URL(string: "https://jsonplaceholder.typicode.com/posts/1") else {return}
