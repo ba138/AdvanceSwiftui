@@ -18,22 +18,27 @@ class DownloadViewModel : ObservableObject {
     init(){
         getPosts()
     }
-    func getPosts(){
-        guard  let url = URL(string: "https://jsonplaceholder.typicode.com/posts/1") else {return}
+    func getPosts() {
+        guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts") else {
+            return
+        }
+        
         downloadData(fromUrl: url) { returnedData in
-            if let data = returnedData {
-                guard let newPost = try? JSONDecoder().decode(PostModel.self, from: data) else {
-                    return
-                }
-                DispatchQueue.main.async { [weak self] in
-                    self?.post.append(newPost)
-
-                }
-            } else {
+            
+            guard let data = returnedData else {
                 print("No Data returned.")
+                return
+            }
+            
+            guard let posts = try? JSONDecoder().decode([PostModel].self, from: data) else {
+                print("Decoding failed")
+                return
+            }
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.post = posts
             }
         }
-    
     }
     func downloadData(fromUrl url : URL ,completionHandler : @escaping (_ data : Data?) -> () ){
        
