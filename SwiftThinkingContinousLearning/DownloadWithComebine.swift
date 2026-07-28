@@ -17,6 +17,27 @@ class ComebineViewModel : ObservableObject {
     @Published var posts : [ComebinePostModel] = [
         
     ]
+    init(){
+     getPosts()
+    }
+    func getPosts(){
+        guard let url = URL(string : "https://jsonplaceholder.typicode.com/posts") else { return }
+        // 1 create publisher
+        // 2 subscribe to publisher
+        // 3 recieve on mian thread
+        // 4 trycatch (this will check the data is good)
+        URLSession.shared.dataTaskPublisher(for: url)
+            .subscribe(on: DispatchQueue.global(qos: .background))
+            .receive(on: DispatchQueue.main)
+            .tryMap { (data, response) -> Data in
+            guard
+                let response = response as? HTTPURLResponse ,
+                response.statusCode >= 200 && response.statusCode < 300 else {
+                throw URLError(.badServerResponse)
+            }
+                return data
+            }
+    }
 }
 struct DownloadWithComebine: View {
     @StateObject var vm = ComebineViewModel()
