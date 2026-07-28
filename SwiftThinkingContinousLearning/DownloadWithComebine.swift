@@ -14,13 +14,24 @@ struct ComebinePostModel : Identifiable , Codable {
     let body : String
 }
 class ComebineViewModel : ObservableObject {
-    @Published var post : [ComebinePostModel] = [
+    @Published var posts : [ComebinePostModel] = [
         
     ]
 }
 struct DownloadWithComebine: View {
+    @StateObject var vm = ComebineViewModel()
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+
+        List {
+            ForEach(vm.posts) { post in
+                VStack {
+                    Text(post.title)
+                        .font(.headline)
+                    Text(post.body)
+                        .foregroundColor(.gray)
+                }
+            }
+        }
     }
 }
 
