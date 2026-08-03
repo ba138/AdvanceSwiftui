@@ -37,6 +37,7 @@ class ComebineViewModel : ObservableObject {
             }
                 return data
             }
+            .decode(type: [ComebinePostModel].self, decoder: JSONDecoder())
     }
 }
 struct DownloadWithComebine: View {
