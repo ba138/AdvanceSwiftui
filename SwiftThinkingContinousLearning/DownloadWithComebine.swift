@@ -17,6 +17,7 @@ class ComebineViewModel : ObservableObject {
     @Published var posts : [ComebinePostModel] = [
         
     ]
+    private var cancellables = Set<AnyCancellable>()
     init(){
      getPosts()
     }
@@ -38,6 +39,13 @@ class ComebineViewModel : ObservableObject {
                 return data
             }
             .decode(type: [ComebinePostModel].self, decoder: JSONDecoder())
+            .sink { (completion) in
+             print("COMPLETION : \(completion)")
+            } receiveValue: { (returnModel) in
+                self.posts = returnModel
+            }
+            .store(in: &cancellables)
+
     }
 }
 struct DownloadWithComebine: View {
@@ -60,3 +68,4 @@ struct DownloadWithComebine: View {
 #Preview {
     DownloadWithComebine()
 }
+
