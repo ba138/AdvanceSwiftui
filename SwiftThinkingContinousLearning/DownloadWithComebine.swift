@@ -36,7 +36,12 @@ class ComebineViewModel : ObservableObject {
             .tryMap (handleOutput)
             .decode(type: [ComebinePostModel].self, decoder: JSONDecoder())
             .sink { (completion) in
-             print("COMPLETION : \(completion)")
+                switch completion {
+                case .finished :
+                    print("finished")
+                case .failure(let error) :
+                    print("there was an error \(error)")
+                }
             } receiveValue: { [weak self] (returnModel) in
                 self?.posts = returnModel
             }
@@ -58,7 +63,7 @@ struct DownloadWithComebine: View {
 
         List {
             ForEach(vm.posts) { post in
-                VStack {
+                VStack (alignment : .leading){
                     Text(post.title)
                         .font(.headline)
                     Text(post.body)
