@@ -35,16 +35,10 @@ class ComebineViewModel : ObservableObject {
             .receive(on: DispatchQueue.main)
             .tryMap (handleOutput)
             .decode(type: [ComebinePostModel].self, decoder: JSONDecoder())
-            .sink { (completion) in
-                switch completion {
-                case .finished :
-                    print("finished")
-                case .failure(let error) :
-                    print("there was an error \(error)")
-                }
-            } receiveValue: { [weak self] (returnModel) in
+            .replaceError(with: [])
+            .sink(receiveValue: { [weak self] (returnModel) in
                 self?.posts = returnModel
-            }
+            })
             .store(in: &cancellables)
 
     }
