@@ -33,14 +33,7 @@ class ComebineViewModel : ObservableObject {
         URLSession.shared.dataTaskPublisher(for: url)
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
-            .tryMap { (data, response) -> Data in
-            guard
-                let response = response as? HTTPURLResponse ,
-                response.statusCode >= 200 && response.statusCode < 300 else {
-                throw URLError(.badServerResponse)
-            }
-                return data
-            }
+            .tryMap (handleOutput)
             .decode(type: [ComebinePostModel].self, decoder: JSONDecoder())
             .sink { (completion) in
              print("COMPLETION : \(completion)")
@@ -49,6 +42,14 @@ class ComebineViewModel : ObservableObject {
             }
             .store(in: &cancellables)
 
+    }
+    func handleOutput(output : URLSession.DataTaskPublisher.Output)throws -> Data {
+        guard
+            let response = output.response as? HTTPURLResponse ,
+            response.statusCode >= 200 && response.statusCode < 300 else {
+            throw URLError(.badServerResponse)
+        }
+        return output.data
     }
 }
 struct DownloadWithComebine: View {
