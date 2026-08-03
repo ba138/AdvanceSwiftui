@@ -27,6 +27,9 @@ class ComebineViewModel : ObservableObject {
         // 2 subscribe to publisher
         // 3 recieve on mian thread
         // 4 trycatch (this will check the data is good)
+        // 5 decode incoming data to model
+        // 6 sink(put the items to our app)
+        // 7 store(cancle the subscription if needed)
         URLSession.shared.dataTaskPublisher(for: url)
             .subscribe(on: DispatchQueue.global(qos: .background))
             .receive(on: DispatchQueue.main)
@@ -41,8 +44,8 @@ class ComebineViewModel : ObservableObject {
             .decode(type: [ComebinePostModel].self, decoder: JSONDecoder())
             .sink { (completion) in
              print("COMPLETION : \(completion)")
-            } receiveValue: { (returnModel) in
-                self.posts = returnModel
+            } receiveValue: { [weak self] (returnModel) in
+                self?.posts = returnModel
             }
             .store(in: &cancellables)
 
