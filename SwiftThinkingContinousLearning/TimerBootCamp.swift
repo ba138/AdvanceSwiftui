@@ -29,6 +29,7 @@ struct TimerBootCamp: View {
         let second = remaining.second ?? 0
         timingRemaning = "\(hourv):\(minute):\(second)"
     }
+    @State var circleCount : Int = 0
     var body: some View {
         ZStack{
             RadialGradient(
@@ -37,15 +38,25 @@ struct TimerBootCamp: View {
                 startRadius: 5,
                 endRadius: 500)
             .ignoresSafeArea()
-            Text(timingRemaning)
-                .font(.system(size: 60,weight: .semibold,design: .rounded)
-                )
-                .foregroundColor(.white)
-                .lineLimit(1)
-                .minimumScaleFactor(0.1)
+            HStack(spacing : 20 ){
+                Circle()
+                    .offset(y : circleCount == 1 ? -20 : 0)
+                Circle()
+                    .offset(y : circleCount == 2 ? -20 : 0)
+
+                Circle()
+                    .offset(y : circleCount == 3 ? -20 : 0)
+
+            }
+            .frame(width: 200)
+            .foregroundColor(.white)
+        
         }
         .onReceive(timer) { _ in
-          updateTimeRemainig()
+            withAnimation(.easeInOut(duration: 1.0)){
+                circleCount = circleCount == 3 ? 0 : circleCount + 1
+
+            }
         }
     }
 }
