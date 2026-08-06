@@ -13,9 +13,13 @@ struct TimerBootCamp: View {
     @State var currentDate : Date = Date()
     var dateFormater : DateFormatter{
         let formater = DateFormatter()
+        formater.dateStyle = .medium
+
         formater.timeStyle = .medium
         return formater
     }
+    @State var count : Int = 10
+    @State var finishedText : String? = nil
     var body: some View {
         ZStack{
             RadialGradient(
@@ -24,15 +28,19 @@ struct TimerBootCamp: View {
                 startRadius: 5,
                 endRadius: 500)
             .ignoresSafeArea()
-            Text(dateFormater.string(from: currentDate))
+            Text(finishedText ?? "\(count)")
                 .font(.system(size: 60,weight: .semibold,design: .rounded)
                 )
                 .foregroundColor(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.1)
         }
-        .onReceive(timer) { value in
-            currentDate = value
+        .onReceive(timer) { _ in
+            if count < 1 {
+                finishedText = "Wow"
+            }else {
+                count -= 1
+            }
         }
     }
 }
