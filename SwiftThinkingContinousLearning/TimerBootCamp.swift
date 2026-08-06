@@ -11,6 +11,11 @@ import Combine
 struct TimerBootCamp: View {
     let timer = Timer.publish(every: 1.0, on: .main , in: .common).autoconnect()
     @State var currentDate : Date = Date()
+    var dateFormater : DateFormatter{
+        let formater = DateFormatter()
+        formater.timeStyle = .medium
+        return formater
+    }
     var body: some View {
         ZStack{
             RadialGradient(
@@ -19,7 +24,7 @@ struct TimerBootCamp: View {
                 startRadius: 5,
                 endRadius: 500)
             .ignoresSafeArea()
-            Text(currentDate.description)
+            Text(dateFormater.string(from: currentDate))
                 .font(.system(size: 60,weight: .semibold,design: .rounded)
                 )
                 .foregroundColor(.white)
