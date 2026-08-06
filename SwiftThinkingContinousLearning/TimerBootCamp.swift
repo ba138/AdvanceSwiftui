@@ -20,6 +20,15 @@ struct TimerBootCamp: View {
     }
     @State var count : Int = 10
     @State var finishedText : String? = nil
+    @State var timingRemaning : String = ""
+    let futureDate : Date = Calendar.current.date(byAdding: .day, value: 1, to: Date()) ?? Date()
+    func updateTimeRemainig (){
+        let remaining = Calendar.current.dateComponents([.hour, .minute , .second], from: Date(), to: futureDate)
+        let hourv = remaining.hour ?? 0
+        let minute = remaining.minute ?? 0
+        let second = remaining.second ?? 0
+        timingRemaning = "\(hourv):\(minute):\(second)"
+    }
     var body: some View {
         ZStack{
             RadialGradient(
@@ -28,7 +37,7 @@ struct TimerBootCamp: View {
                 startRadius: 5,
                 endRadius: 500)
             .ignoresSafeArea()
-            Text(finishedText ?? "\(count)")
+            Text(timingRemaning)
                 .font(.system(size: 60,weight: .semibold,design: .rounded)
                 )
                 .foregroundColor(.white)
@@ -36,11 +45,7 @@ struct TimerBootCamp: View {
                 .minimumScaleFactor(0.1)
         }
         .onReceive(timer) { _ in
-            if count < 1 {
-                finishedText = "Wow"
-            }else {
-                count -= 1
-            }
+          updateTimeRemainig()
         }
     }
 }
