@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TimerBootCamp: View {
+    let timer = Timer.publish(every: 1.0, on: .main , in: .common).autoconnect()
     var body: some View {
         ZStack{
             RadialGradient(
@@ -15,7 +16,14 @@ struct TimerBootCamp: View {
                 center: .center,
                 startRadius: 5,
                 endRadius: 500)
-        }.ignoresSafeArea()
+            .ignoresSafeArea()
+            Text("Hi")
+                .font(.system(size: 60,weight: .semibold,design: .rounded)
+                )
+                .foregroundColor(.white)
+                .lineLimit(1)
+                .minimumScaleFactor(0.1)
+        }
     }
 }
 
